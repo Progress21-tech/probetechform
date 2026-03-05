@@ -1,541 +1,799 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Website Project Form</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #0a1628;
-    --navy-mid: #0d2045;
-    --navy-deep: #060e1a;
-    --blue: #1a6ef5;
-    --blue-bright: #3d8bff;
-    --cyan: #00d4ff;
-    --white: #ffffff;
-    --off-white: #f4f7ff;
-    --gray-100: #eaf0ff;
-    --gray-300: #9aaac8;
-    --gray-500: #5c6f8e;
-    --gray-700: #2e3f5c;
-    --green: #00c48c;
-    --amber: #ffb547;
-    --font: "Inter", sans-serif;
-    --radius: 16px;
-    --glass: rgba(255,255,255,0.05);
-    --glass-border: rgba(255,255,255,0.1);
-    --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
-
-  body {
-    font-family: var(--font);
-    background: var(--navy-deep);
-    color: var(--white);
-    min-height: 100vh;
-  }
-
-  .hero {
-    background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-deep) 100%);
-    padding: 64px 32px 52px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--glass-border);
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    width: 700px; height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 65%);
-    top: -300px; left: 50%; transform: translateX(-50%);
-    pointer-events: none;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 85% 110%, rgba(26,110,245,0.1) 0%, transparent 55%);
-    pointer-events: none;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-tag::before, .hero-tag::after {
-    content: '';
-    display: block;
-    width: 28px; height: 1px;
-    background: var(--cyan);
-    opacity: 0.45;
-  }
-
-  .hero h1 {
-    font-size: clamp(1.9rem, 4.5vw, 3rem);
-    font-weight: 600;
-    line-height: 1.18;
-    letter-spacing: -0.025em;
-    position: relative;
-    z-index: 1;
-    max-width: 560px;
-    margin: 0 auto 16px;
-  }
-
-  .hero h1 .accent {
-    background: linear-gradient(90deg, var(--blue-bright), var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero p {
-    font-size: 15px;
-    font-weight: 300;
-    color: var(--gray-300);
-    max-width: 420px;
-    margin: 0 auto;
-    line-height: 1.75;
-    position: relative;
-    z-index: 1;
-  }
-
-  .form-wrap {
-    max-width: 660px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  .section-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--glass-border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--glass-border), transparent);
-  }
-
-  .field-group { margin-bottom: 24px; }
-
-  .field-group > label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--off-white);
-    margin-bottom: 8px;
-  }
-
-  .field-group > label span.req { color: var(--cyan); margin-left: 2px; }
-  .field-group > label span.hint { color: var(--gray-500); font-weight: 400; }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="url"],
-  select,
-  textarea {
-    width: 100%;
-    padding: 13px 16px;
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--white);
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    outline: none;
-    transition: var(--transition);
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
-  input::placeholder, textarea::placeholder { color: var(--gray-500); }
-
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--blue-bright);
-    background: rgba(26,110,245,0.08);
-    box-shadow: 0 0 0 3px rgba(61,139,255,0.15);
-  }
-
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239aaac8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
-    cursor: pointer;
-  }
-
-  select option { background: var(--navy-mid); color: var(--white); }
-  textarea { resize: vertical; min-height: 100px; line-height: 1.65; }
-
-  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-  .checkbox-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 4px;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 14px;
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 13px;
-    color: var(--gray-300);
-    user-select: none;
-    background: var(--glass);
-  }
-
-  .checkbox-item:hover { border-color: var(--blue-bright); background: rgba(61,139,255,0.08); color: var(--white); }
-
-  .checkbox-item input[type="checkbox"] {
-    width: 15px; height: 15px;
-    accent-color: var(--blue-bright);
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-
-  .checkbox-item.checked { border-color: var(--blue-bright); background: rgba(26,110,245,0.12); color: var(--white); }
-
-  .radio-group { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
-
-  .radio-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 16px;
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 13.5px;
-    color: var(--gray-300);
-    user-select: none;
-    background: var(--glass);
-  }
-
-  .radio-item:hover { border-color: var(--blue-bright); background: rgba(61,139,255,0.08); color: var(--white); }
-
-  .radio-item input[type="radio"] {
-    width: 15px; height: 15px;
-    accent-color: var(--blue-bright);
-    flex-shrink: 0;
-  }
-
-  .radio-item.checked { border-color: var(--blue-bright); background: rgba(26,110,245,0.12); color: var(--white); }
-
-  .divider { border: none; border-top: 1px solid var(--glass-border); margin: 36px 0 32px; }
-
-  .submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
-    color: var(--white);
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: var(--transition);
-    margin-top: 8px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(26,110,245,0.35);
-  }
-
-  .submit-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,212,255,0.2) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 32px rgba(26,110,245,0.5); }
-  .submit-btn:hover::before { opacity: 1; }
-  .submit-btn:active { transform: scale(0.99); }
-
-  .note { font-size: 12px; color: var(--gray-500); margin-top: 14px; text-align: center; line-height: 1.6; }
-
-  .success {
-    display: none;
-    text-align: center;
-    padding: 80px 24px;
-  }
-
-  .success-icon {
-    width: 64px; height: 64px;
-    background: linear-gradient(135deg, var(--blue), var(--cyan));
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    box-shadow: 0 8px 32px rgba(0,212,255,0.3);
-  }
-
-  .success h2 { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; }
-
-  .success p { color: var(--gray-300); font-size: 15px; line-height: 1.75; max-width: 360px; margin: 0 auto; }
-  .success p strong { color: var(--cyan); font-weight: 500; }
-
-  @media (max-width: 520px) {
-    .row-2 { grid-template-columns: 1fr; }
-    .checkbox-group { grid-template-columns: 1fr; }
-    .hero { padding: 48px 20px 40px; }
-  }
-</style>
-</head>
-<body>
-
-<div class="hero">
-  <div class="hero-tag">Free Website Project</div>
-  <h1>Let's build something <span class="accent">remarkable</span> for you</h1>
-  <p>Tell us about your business and vision. Takes under 2 minutes — and it's completely free to get started.</p>
-</div>
-
-<div class="form-wrap">
-  <div id="formContainer">
-
-    <div class="section-label">01 — About You</div>
-
-    <div class="row-2">
-      <div class="field-group">
-        <label>Full Name <span class="req">*</span></label>
-        <input type="text" id="fullName" placeholder="Your full name" />
-      </div>
-      <div class="field-group">
-        <label>Business / Brand Name <span class="req">*</span></label>
-        <input type="text" id="businessName" placeholder="e.g. Adeyemi Properties" />
-      </div>
-    </div>
-
-    <div class="row-2">
-      <div class="field-group">
-        <label>Email Address <span class="req">*</span></label>
-        <input type="email" id="email" placeholder="you@company.com" />
-      </div>
-      <div class="field-group">
-        <label>WhatsApp / Phone <span class="req">*</span></label>
-        <input type="tel" id="phone" placeholder="+234 800 000 0000" />
-      </div>
-    </div>
-
-    <div class="field-group">
-      <label>Industry / What You Do <span class="req">*</span></label>
-      <select id="industry">
-        <option value="" disabled selected>Select your industry</option>
-        <option>Real Estate</option>
-        <option>Law / Legal Services</option>
-        <option>Finance / Investment</option>
-        <option>Healthcare / Medicine</option>
-        <option>Hospitality / Restaurant</option>
-        <option>Fashion / Retail</option>
-        <option>Technology / Startups</option>
-        <option>Consulting / Coaching</option>
-        <option>Construction / Architecture</option>
-        <option>Personal Brand / Influencer</option>
-        <option>Other</option>
-      </select>
-    </div>
-
-    <hr class="divider"/>
-
-    <div class="section-label">02 — Your Website</div>
-
-    <div class="field-group">
-      <label>What type of website do you need? <span class="req">*</span></label>
-      <div class="radio-group" id="websiteType">
-        <label class="radio-item" onclick="selectRadio(this,'websiteType')">
-          <input type="radio" name="websiteType" value="Business Website" /> Business Website — showcase services & attract clients
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'websiteType')">
-          <input type="radio" name="websiteType" value="E-commerce Store" /> E-commerce Store — sell products online
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'websiteType')">
-          <input type="radio" name="websiteType" value="Personal Brand" /> Personal Brand / Portfolio
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'websiteType')">
-          <input type="radio" name="websiteType" value="Landing Page" /> Landing Page — single focused goal
-        </label>
-      </div>
-    </div>
-
-    <div class="field-group">
-      <label>Do you have an existing website?</label>
-      <input type="url" id="existingUrl" placeholder="Paste your current website link (if any)" />
-    </div>
-
-    <div class="field-group">
-      <label>What features do you want? <span class="hint">(Select all that apply)</span></label>
-      <div class="checkbox-group" id="features">
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Contact Form" /> Contact Form</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Photo Gallery" /> Photo / Gallery</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Booking / Appointments" /> Booking / Appointments</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Blog / Articles" /> Blog / Articles</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Online Store / Payment" /> Online Store / Payment</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Social Media Links" /> Social Media Links</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="WhatsApp Chat Button" /> WhatsApp Chat Button</label>
-        <label class="checkbox-item" onclick="toggleCheck(this)"><input type="checkbox" value="Testimonials Section" /> Testimonials Section</label>
-      </div>
-    </div>
-
-    <hr class="divider"/>
-
-    <div class="section-label">03 — Style & Goals</div>
-
-    <div class="field-group">
-      <label>What style/vibe do you want? <span class="req">*</span></label>
-      <div class="radio-group" id="vibe">
-        <label class="radio-item" onclick="selectRadio(this,'vibe')">
-          <input type="radio" name="vibe" value="Luxury & Premium" /> Luxury & Premium — high-end, elegant, refined
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'vibe')">
-          <input type="radio" name="vibe" value="Modern & Minimalist" /> Modern & Minimalist — clean, sharp, professional
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'vibe')">
-          <input type="radio" name="vibe" value="Bold & Creative" /> Bold & Creative — colorful, expressive, memorable
-        </label>
-        <label class="radio-item" onclick="selectRadio(this,'vibe')">
-          <input type="radio" name="vibe" value="Corporate & Trustworthy" /> Corporate & Trustworthy — formal, authoritative
-        </label>
-      </div>
-    </div>
-
-    <div class="field-group">
-      <label>Any websites you admire or want yours to feel like?</label>
-      <input type="text" id="inspiration" placeholder="e.g. apple.com, or describe what you like" />
-    </div>
-
-    <div class="field-group">
-      <label>What is the #1 goal of your website? <span class="req">*</span></label>
-      <textarea id="goal" placeholder="e.g. I want people to contact me for consultations, sell products online, or look credible and professional..."></textarea>
-    </div>
-
-    <div class="field-group">
-      <label>Anything else you'd like us to know?</label>
-      <textarea id="extra" placeholder="Specific requests, timeline, or questions..." style="min-height:80px"></textarea>
-    </div>
-
-    <button class="submit-btn" onclick="submitForm()">Submit My Project Brief →</button>
-    <p class="note">🔒 Your information is private and will only be used to build your website. No spam, ever.</p>
-
-  </div>
-
-  <div class="success" id="successMsg">
-    <div class="success-icon">✓</div>
-    <h2>We've got your brief!</h2>
-    <p>We'll reach out within <strong>24 hours</strong> to discuss your project. Check your email and WhatsApp.</p>
-  </div>
-</div>
-
-<script>
-  function selectRadio(el, groupId) {
-    document.getElementById(groupId).querySelectorAll('.radio-item').forEach(i => i.classList.remove('checked'));
-    el.classList.add('checked');
-    el.querySelector('input[type="radio"]').checked = true;
-  }
-
-  function toggleCheck(el) {
-    el.classList.toggle('checked');
-    el.querySelector('input[type="checkbox"]').checked = el.classList.contains('checked');
-  }
-
-  async function submitForm() {
-    const required = { fullName:'Full Name', businessName:'Business Name', email:'Email Address', phone:'Phone Number', industry:'Industry', goal:'Website Goal' };
-    for (const [id, label] of Object.entries(required)) {
-      const el = document.getElementById(id);
-      if (!el.value.trim()) {
-        el.style.borderColor = '#ff4d4d';
-        el.focus();
-        alert(`Please fill in: ${label}`);
-        setTimeout(() => el.style.borderColor = '', 2000);
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Website Project Form</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-    }
-    if (!document.querySelector('input[name="websiteType"]:checked')) { alert('Please select a website type'); return; }
-    if (!document.querySelector('input[name="vibe"]:checked')) { alert('Please select a website style'); return; }
 
-    // Collect all data
-    const features = [...document.querySelectorAll('#features input:checked')].map(i => i.value).join(', ') || 'None selected';
-    const data = {
-      _subject: '🌐 New Website Project Brief',
-      'Full Name':         document.getElementById('fullName').value,
-      'Business Name':     document.getElementById('businessName').value,
-      'Email':             document.getElementById('email').value,
-      'Phone / WhatsApp':  document.getElementById('phone').value,
-      'Industry':          document.getElementById('industry').value,
-      'Website Type':      document.querySelector('input[name="websiteType"]:checked').value,
-      'Desired Features':  features,
-      'Style / Vibe':      document.querySelector('input[name="vibe"]:checked').value,
-      'Inspiration Sites': document.getElementById('inspiration').value || 'N/A',
-      'Main Goal':         document.getElementById('goal').value,
-      'Extra Notes':       document.getElementById('extra').value || 'N/A',
-    };
+      :root {
+        --navy: #0a1628;
+        --navy-mid: #0d2045;
+        --navy-deep: #060e1a;
+        --blue: #1a6ef5;
+        --blue-bright: #3d8bff;
+        --cyan: #00d4ff;
+        --white: #ffffff;
+        --off-white: #f4f7ff;
+        --gray-300: #9aaac8;
+        --gray-500: #5c6f8e;
+        --font: "Inter", sans-serif;
+        --glass: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-    // Show loading state
-    const btn = document.querySelector('.submit-btn');
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
+      body {
+        font-family: var(--font);
+        background: var(--navy-deep);
+        color: var(--white);
+        min-height: 100vh;
+      }
 
-    try {
-      const res = await fetch('https://formspree.io/f/xwpbkdgv', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
+      .hero {
+        background: linear-gradient(
+          160deg,
+          var(--navy-mid) 0%,
+          var(--navy-deep) 100%
+        );
+        padding: 64px 32px 52px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 212, 255, 0.07) 0%,
+          transparent 65%
+        );
+        top: -300px;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 85% 110%,
+          rgba(26, 110, 245, 0.1) 0%,
+          transparent 55%
+        );
+        pointer-events: none;
+      }
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      .hero-tag::before,
+      .hero-tag::after {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--cyan);
+        opacity: 0.45;
+      }
+      .hero h1 {
+        font-size: clamp(1.9rem, 4.5vw, 3rem);
+        font-weight: 600;
+        line-height: 1.18;
+        letter-spacing: -0.025em;
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+        margin: 0 auto 16px;
+      }
+      .hero h1 .accent {
+        background: linear-gradient(90deg, var(--blue-bright), var(--cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero p {
+        font-size: 15px;
+        font-weight: 300;
+        color: var(--gray-300);
+        max-width: 420px;
+        margin: 0 auto;
+        line-height: 1.75;
+        position: relative;
+        z-index: 1;
+      }
 
-      if (res.ok) {
-        document.getElementById('formContainer').style.display = 'none';
-        document.getElementById('successMsg').style.display = 'block';
-      } else {
-        alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
-        btn.textContent = 'Submit My Project Brief →';
+      .form-wrap {
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 48px 24px 80px;
+      }
+
+      .section-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--glass-border), transparent);
+      }
+
+      .field-group {
+        margin-bottom: 24px;
+      }
+      .field-group > label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--off-white);
+        margin-bottom: 8px;
+      }
+      .field-group > label span.req {
+        color: var(--cyan);
+        margin-left: 2px;
+      }
+      .field-group > label span.hint {
+        color: var(--gray-500);
+        font-weight: 400;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="url"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 13px 16px;
+        font-family: var(--font);
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--white);
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        outline: none;
+        transition: var(--transition);
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--gray-500);
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--blue-bright);
+        background: rgba(26, 110, 245, 0.08);
+        box-shadow: 0 0 0 3px rgba(61, 139, 255, 0.15);
+      }
+      select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239aaac8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px;
+        cursor: pointer;
+      }
+      select option {
+        background: var(--navy-mid);
+        color: var(--white);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+        line-height: 1.65;
+      }
+
+      .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .checkbox-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 13px;
+        color: var(--gray-300);
+        user-select: none;
+        background: var(--glass);
+      }
+      .checkbox-item:hover {
+        border-color: var(--blue-bright);
+        background: rgba(61, 139, 255, 0.08);
+        color: var(--white);
+      }
+      .checkbox-item input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        accent-color: var(--blue-bright);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .checkbox-item.checked {
+        border-color: var(--blue-bright);
+        background: rgba(26, 110, 245, 0.12);
+        color: var(--white);
+      }
+
+      .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .radio-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 16px;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 13.5px;
+        color: var(--gray-300);
+        user-select: none;
+        background: var(--glass);
+      }
+      .radio-item:hover {
+        border-color: var(--blue-bright);
+        background: rgba(61, 139, 255, 0.08);
+        color: var(--white);
+      }
+      .radio-item input[type="radio"] {
+        width: 15px;
+        height: 15px;
+        accent-color: var(--blue-bright);
+        flex-shrink: 0;
+      }
+      .radio-item.checked {
+        border-color: var(--blue-bright);
+        background: rgba(26, 110, 245, 0.12);
+        color: var(--white);
+      }
+
+      .divider {
+        border: none;
+        border-top: 1px solid var(--glass-border);
+        margin: 36px 0 32px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--blue) 0%,
+          var(--blue-bright) 100%
+        );
+        color: var(--white);
+        font-family: var(--font);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 8px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 24px rgba(26, 110, 245, 0.35);
+      }
+      .submit-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 212, 255, 0.2) 0%,
+          transparent 60%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .submit-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 32px rgba(26, 110, 245, 0.5);
+      }
+      .submit-btn:hover::before {
+        opacity: 1;
+      }
+      .submit-btn:active {
+        transform: scale(0.99);
+      }
+      .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .note {
+        font-size: 12px;
+        color: var(--gray-500);
+        margin-top: 14px;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .success {
+        display: none;
+        text-align: center;
+        padding: 80px 24px;
+      }
+      .success-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, var(--blue), var(--cyan));
+        border-radius: 50%;
+        margin: 0 auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+      }
+      .success h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+      }
+      .success p {
+        color: var(--gray-300);
+        font-size: 15px;
+        line-height: 1.75;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+      .success p strong {
+        color: var(--cyan);
+        font-weight: 500;
+      }
+
+      @media (max-width: 520px) {
+        .row-2 {
+          grid-template-columns: 1fr;
+        }
+        .checkbox-group {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          padding: 48px 20px 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-tag">Free Website Project</div>
+      <h1>
+        Let's build something <span class="accent">remarkable</span> for you
+      </h1>
+      <p>
+        Tell us about your business and vision. Takes under 2 minutes — and it's
+        completely free to get started.
+      </p>
+    </div>
+
+    <div class="form-wrap">
+      <div id="formContainer">
+        <div class="section-label">01 — About You</div>
+        <div class="row-2">
+          <div class="field-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="fullName" placeholder="Your full name" />
+          </div>
+          <div class="field-group">
+            <label>Business / Brand Name <span class="req">*</span></label>
+            <input
+              type="text"
+              id="businessName"
+              placeholder="e.g. Adeyemi Properties"
+            />
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field-group">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="you@company.com" />
+          </div>
+          <div class="field-group">
+            <label>WhatsApp / Phone <span class="req">*</span></label>
+            <input type="tel" id="phone" placeholder="+234 800 000 0000" />
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Industry / What You Do <span class="req">*</span></label>
+          <select id="industry">
+            <option value="" disabled selected>Select your industry</option>
+            <option>Real Estate</option>
+            <option>Law / Legal Services</option>
+            <option>Finance / Investment</option>
+            <option>Healthcare / Medicine</option>
+            <option>Hospitality / Restaurant</option>
+            <option>Fashion / Retail</option>
+            <option>Technology / Startups</option>
+            <option>Consulting / Coaching</option>
+            <option>Construction / Architecture</option>
+            <option>Personal Brand / Influencer</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">02 — Your Website</div>
+        <div class="field-group">
+          <label
+            >What type of website do you need? <span class="req">*</span></label
+          >
+          <div class="radio-group" id="websiteType">
+            <label
+              class="radio-item"
+              onclick="selectRadio(this, 'websiteType')"
+            >
+              <input type="radio" name="websiteType" value="Business Website" />
+              Business Website — showcase services & attract clients
+            </label>
+            <label
+              class="radio-item"
+              onclick="selectRadio(this, 'websiteType')"
+            >
+              <input type="radio" name="websiteType" value="E-commerce Store" />
+              E-commerce Store — sell products online
+            </label>
+            <label
+              class="radio-item"
+              onclick="selectRadio(this, 'websiteType')"
+            >
+              <input type="radio" name="websiteType" value="Personal Brand" />
+              Personal Brand / Portfolio
+            </label>
+            <label
+              class="radio-item"
+              onclick="selectRadio(this, 'websiteType')"
+            >
+              <input type="radio" name="websiteType" value="Landing Page" />
+              Landing Page — single focused goal
+            </label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Do you have an existing website?</label>
+          <input
+            type="url"
+            id="existingUrl"
+            placeholder="Paste your current website link (if any)"
+          />
+        </div>
+        <div class="field-group">
+          <label
+            >What features do you want?
+            <span class="hint">(Select all that apply)</span></label
+          >
+          <div class="checkbox-group" id="features">
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Contact Form" /> Contact
+              Form</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Photo Gallery" /> Photo /
+              Gallery</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Booking / Appointments" /> Booking
+              / Appointments</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Blog / Articles" /> Blog /
+              Articles</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Online Store / Payment" /> Online
+              Store / Payment</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Social Media Links" /> Social Media
+              Links</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="WhatsApp Chat Button" /> WhatsApp
+              Chat Button</label
+            >
+            <label class="checkbox-item" onclick="toggleCheck(this)"
+              ><input type="checkbox" value="Testimonials Section" />
+              Testimonials Section</label
+            >
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-label">03 — Style & Goals</div>
+        <div class="field-group">
+          <label>What style/vibe do you want? <span class="req">*</span></label>
+          <div class="radio-group" id="vibe">
+            <label class="radio-item" onclick="selectRadio(this, 'vibe')">
+              <input type="radio" name="vibe" value="Luxury & Premium" /> Luxury
+              & Premium — high-end, elegant, refined
+            </label>
+            <label class="radio-item" onclick="selectRadio(this, 'vibe')">
+              <input type="radio" name="vibe" value="Modern & Minimalist" />
+              Modern & Minimalist — clean, sharp, professional
+            </label>
+            <label class="radio-item" onclick="selectRadio(this, 'vibe')">
+              <input type="radio" name="vibe" value="Bold & Creative" /> Bold &
+              Creative — colorful, expressive, memorable
+            </label>
+            <label class="radio-item" onclick="selectRadio(this, 'vibe')">
+              <input type="radio" name="vibe" value="Corporate & Trustworthy" />
+              Corporate & Trustworthy — formal, authoritative
+            </label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Any websites you admire or want yours to feel like?</label>
+          <input
+            type="text"
+            id="inspiration"
+            placeholder="e.g. apple.com, or describe what you like"
+          />
+        </div>
+        <div class="field-group">
+          <label
+            >What is the #1 goal of your website?
+            <span class="req">*</span></label
+          >
+          <textarea
+            id="goal"
+            placeholder="e.g. I want people to contact me for consultations, sell products online, or look credible and professional..."
+          ></textarea>
+        </div>
+        <div class="field-group">
+          <label>Anything else you'd like us to know?</label>
+          <textarea
+            id="extra"
+            placeholder="Specific requests, timeline, or questions..."
+            style="min-height: 80px"
+          ></textarea>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+          Submit My Project Brief →
+        </button>
+        <p class="note">
+          🔒 Your information is private and will only be used to build your
+          website. No spam, ever.
+        </p>
+      </div>
+
+      <div class="success" id="successMsg">
+        <div class="success-icon">✓</div>
+        <h2>We've got your brief!</h2>
+        <p>
+          We'll reach out within <strong>24 hours</strong> to discuss your
+          project. Check your email and WhatsApp.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function selectRadio(el, groupId) {
+        document
+          .getElementById(groupId)
+          .querySelectorAll(".radio-item")
+          .forEach((i) => i.classList.remove("checked"));
+        el.classList.add("checked");
+        el.querySelector('input[type="radio"]').checked = true;
+      }
+
+      function toggleCheck(el) {
+        el.classList.toggle("checked");
+        el.querySelector('input[type="checkbox"]').checked =
+          el.classList.contains("checked");
+      }
+
+      async function submitForm() {
+        // Validate required fields
+        const required = {
+          fullName: "Full Name",
+          businessName: "Business Name",
+          email: "Email Address",
+          phone: "Phone Number",
+          industry: "Industry",
+          goal: "Website Goal",
+        };
+        for (const [id, label] of Object.entries(required)) {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) {
+            el.style.borderColor = "#ff4d4d";
+            el.focus();
+            alert(`Please fill in: ${label}`);
+            setTimeout(() => (el.style.borderColor = ""), 2000);
+            return;
+          }
+        }
+        if (!document.querySelector('input[name="websiteType"]:checked')) {
+          alert("Please select a website type");
+          return;
+        }
+        if (!document.querySelector('input[name="vibe"]:checked')) {
+          alert("Please select a website style");
+          return;
+        }
+
+        const btn = document.getElementById("submitBtn");
+        btn.textContent = "Sending...";
+        btn.disabled = true;
+
+        // Collect form data as URL-encoded (works with Formspree without CORS issues)
+        const features =
+          [...document.querySelectorAll("#features input:checked")]
+            .map((i) => i.value)
+            .join(", ") || "None selected";
+
+        const payload = new FormData();
+        payload.append(
+          "_subject",
+          "🌐 New Website Project Brief — Probe Technologies",
+        );
+        payload.append("_replyto", document.getElementById("email").value);
+        payload.append("Full Name", document.getElementById("fullName").value);
+        payload.append(
+          "Business Name",
+          document.getElementById("businessName").value,
+        );
+        payload.append("Email", document.getElementById("email").value);
+        payload.append(
+          "Phone / WhatsApp",
+          document.getElementById("phone").value,
+        );
+        payload.append("Industry", document.getElementById("industry").value);
+        payload.append(
+          "Website Type",
+          document.querySelector('input[name="websiteType"]:checked').value,
+        );
+        payload.append("Desired Features", features);
+        payload.append(
+          "Style / Vibe",
+          document.querySelector('input[name="vibe"]:checked').value,
+        );
+        payload.append(
+          "Inspiration Sites",
+          document.getElementById("inspiration").value || "N/A",
+        );
+        payload.append("Main Goal", document.getElementById("goal").value);
+        payload.append(
+          "Extra Notes",
+          document.getElementById("extra").value || "N/A",
+        );
+
+        try {
+          // Using Formspree with your email directly — no account needed for first 50/month
+          const res = await fetch(
+            "https://formspree.io/f/info.probetechnologieslimited@gmail.com",
+            {
+              method: "POST",
+              body: payload,
+              headers: { Accept: "application/json" },
+            },
+          );
+
+          const result = await res.json();
+
+          if (res.ok && result.ok) {
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("successMsg").style.display = "block";
+          } else {
+            // Fallback: open email client with all data pre-filled
+            fallbackEmail();
+          }
+        } catch (err) {
+          fallbackEmail();
+        }
+      }
+
+      function fallbackEmail() {
+        const btn = document.getElementById("submitBtn");
+        const name = document.getElementById("fullName").value;
+        const biz = document.getElementById("businessName").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const industry = document.getElementById("industry").value;
+        const wType =
+          document.querySelector('input[name="websiteType"]:checked')?.value ||
+          "N/A";
+        const vibe =
+          document.querySelector('input[name="vibe"]:checked')?.value || "N/A";
+        const features =
+          [...document.querySelectorAll("#features input:checked")]
+            .map((i) => i.value)
+            .join(", ") || "None";
+        const goal = document.getElementById("goal").value;
+        const extra = document.getElementById("extra").value || "N/A";
+        const inspo = document.getElementById("inspiration").value || "N/A";
+
+        const body = `New Website Project Brief
+
+Full Name: ${name}
+Business Name: ${biz}
+Email: ${email}
+Phone / WhatsApp: ${phone}
+Industry: ${industry}
+
+Website Type: ${wType}
+Desired Features: ${features}
+Style / Vibe: ${vibe}
+Inspiration Sites: ${inspo}
+
+Main Goal:
+${goal}
+
+Extra Notes:
+${extra}`;
+
+        const mailto = `mailto:info.probetechnologieslimited@gmail.com?subject=${encodeURIComponent("🌐 New Website Project Brief — " + biz)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+
+        // Show success anyway
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("successMsg").style.display = "block";
+
+        btn.textContent = "Submit My Project Brief →";
         btn.disabled = false;
       }
-    } catch (err) {
-      alert('Network error. Please check your connection and try again.');
-      btn.textContent = 'Submit My Project Brief →';
-      btn.disabled = false;
-    }
-  }
-</script>
-</body>
+    </script>
+  </body>
 </html>
